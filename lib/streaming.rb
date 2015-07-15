@@ -30,23 +30,24 @@ module Streaming
   end
 
   def formatted_file
-    $all_tweets.each do |sentence|
-      sentence = count_valid_words(sentence)
 
       tweet_text_path = File.join( File.dirname(__FILE__), '../public/analyzed_tweets.txt' ) #relative to module location
       open(tweet_text_path, 'a') do |f|
         f.puts sentence
       end
 
-    end
+
+      open(tweet_text_path, 'a') do |f|
+        f.puts "#{$word_count} words counted"
+      end
   end
 
   def read_file
     tweet_text_path = File.join( File.dirname(__FILE__), '../public/all_tweets.txt' )
     File.open(tweet_text_path).readlines.each do |line|
 
-      binding.pry
-       $all_tweets << (line)
+      puts sanitize_text(line)
+       $all_tweets << (sanitize_text(line))
     end
   end
 

@@ -28,7 +28,13 @@ class TweetsController < ApplicationController
   def sanitize
     read_file
 
-    
+    $all_tweets = $all_tweets.join
+
+    count_valid_words($all_tweets)
+
+
+    binding.pry
+
     formatted_file
 
   end

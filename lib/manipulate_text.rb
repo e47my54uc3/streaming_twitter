@@ -8,21 +8,22 @@ module ManipulateText
 
     sentence
     .split(/[^A-Za-z]/)
-    .gsub(/\bRT\b/, '')
+    .map{|el| el.gsub(/\bRT\b/, '')}
     .join(' ')
 
   end
 
   def count_valid_words(sentence)
 
-    array_of_strings = sanitize_text(sentence)
+    array_of_strings = sentence.split(/\s+/)
 
-    array_of_strings.each do |word|
+    array_of_strings.each.with_index do |word, ind|
       if STOP_WORDS.include?(word)
         next
       else
-        @@word_count += 1
-        arr.inject(@@word_hash) { |h,v| h[v] += 1; h }
+        $word_count += 1
+        $word_hash[word] += 1
+        binding.pry
       end
     end
    

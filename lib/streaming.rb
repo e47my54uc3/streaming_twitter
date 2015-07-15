@@ -1,15 +1,15 @@
 module Streaming
-  def transcribe_5min_tweets(holder)
+  def transcribe_5min_tweets
     t = Time.now
    
     TweetStream::Client.new.sample do |status|
       minutes = (status.created_at - t).to_i / 60
 
-      if minutes < 1 #will grab streams for up to 5 minutes
-        puts "#{status.text}"
-        holder << status.text
+      if minutes < 5 #will grab streams for up to 5 minutes
 
-        write_file(status.text)
+        puts "#{status.text}"
+
+        append_file(status.text)
 
         puts minutes
       else
@@ -19,15 +19,34 @@ module Streaming
 
   end
 
-  def write_file(string)
+  def append_file(string)
     tweet_text_path = File.join( File.dirname(__FILE__), '../public/all_tweets.txt' ) #relative to module location
-    File.write(tweet_text_path, string)
+    # File.write(tweet_text_path, string)
+
+    open(tweet_text_path, 'a') do |f|
+      f.puts string
+    end
+
+  end
+
+  def formatted_file
+    $all_tweets.each do |sentence|
+      sentence = count_valid_words(sentence)
+
+      tweet_text_path = File.join( File.dirname(__FILE__), '../public/analyzed_tweets.txt' ) #relative to module location
+      open(tweet_text_path, 'a') do |f|
+        f.puts sentence
+      end
+
+    end
   end
 
   def read_file
     tweet_text_path = File.join( File.dirname(__FILE__), '../public/all_tweets.txt' )
     File.open(tweet_text_path).readlines.each do |line|
-       puts line
+
+      binding.pry
+       $all_tweets << (line)
     end
   end
 

@@ -29,17 +29,22 @@ module Streaming
 
   end
 
-  def formatted_file
+  def formatted_file(sentence)
 
       tweet_text_path = File.join( File.dirname(__FILE__), '../public/analyzed_tweets.txt' ) #relative to module location
+
+      open(tweet_text_path, 'a') do |f|
+       
+        f.puts "The most common words are: #{find_top_ten}."
+        f.puts "\n----------------\n"
+        f.puts "#{$word_count} words were analyzed in total."
+        f.puts "\n----------------\n"
+      end
+
       open(tweet_text_path, 'a') do |f|
         f.puts sentence
       end
 
-
-      open(tweet_text_path, 'a') do |f|
-        f.puts "#{$word_count} words counted"
-      end
   end
 
   def read_file

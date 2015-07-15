@@ -9,17 +9,12 @@ class TweetsController < ApplicationController
   $word_hash = Hash.new(0)
 
   def stream
-    # ignore_stop_words("")
 
     append_file(Time.now.to_s)
-    # @@all_tweets = []
+
     transcribe_5min_tweets
 
     append_file(Time.now.to_s)
-
-    # count_words(@@all_tweets)
-
-    binding.pry
 
     redirect_to :controller => 'tweets', :action => 'sanitize'
   end
@@ -28,14 +23,12 @@ class TweetsController < ApplicationController
   def sanitize
     read_file
 
-    $all_tweets = $all_tweets.join
+    $all_tweets = $all_tweets.join(' ')
 
     count_valid_words($all_tweets)
 
+    formatted_file($all_tweets)
 
-    binding.pry
-
-    formatted_file
-
+    render :json => {most_common_words: find_top_ten, total_words_analyzed: $word_count}
   end
 end

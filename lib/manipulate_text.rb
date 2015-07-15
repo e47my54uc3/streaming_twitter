@@ -7,15 +7,17 @@ module ManipulateText
   def sanitize_text(sentence)
 
     sentence
+    .downcase
     .split(/[^A-Za-z]/)
-    .map{|el| el.gsub(/\bRT\b/, '')}
-    .join(' ')
+    .map{|el| el.gsub(/\brt\b/, '')}
+    .join(' ') +'.'
 
   end
 
   def count_valid_words(sentence)
 
-    array_of_strings = sentence.split(/\s+/)
+    array_of_strings = sentence.split(/[.|\s+]/)
+
 
     array_of_strings.each.with_index do |word, ind|
       if STOP_WORDS.include?(word)
@@ -23,7 +25,6 @@ module ManipulateText
       else
         $word_count += 1
         $word_hash[word] += 1
-        binding.pry
       end
     end
    
@@ -31,14 +32,12 @@ module ManipulateText
   end
 
 
-  def find_top_ten(word_hash)
-    # word_hash.group_by{|a| x.count(a)}
-   
+  def find_top_ten
+    most_common = []
+    string = ""
+    most_common = $word_hash.sort_by{|k, v| v}[-10..-1].reverse
 
-    # top_count = @@word_hash.values.max
-
-    # @@word_hash.select{|k, v| v == max_value}.keys
-
+    return most_common
 
   end
 

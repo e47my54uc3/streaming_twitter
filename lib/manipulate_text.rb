@@ -2,8 +2,6 @@ require 'stop_words'
 module ManipulateText
   include StopWords
 
-
-
   def sanitize_text(sentence)
 
     sentence
@@ -18,7 +16,6 @@ module ManipulateText
 
     array_of_strings = sentence.split(/[.|\s+]/)
 
-
     array_of_strings.each.with_index do |word, ind|
       if STOP_WORDS.include?(word)
         next
@@ -28,7 +25,6 @@ module ManipulateText
       end
     end
    
-
   end
 
 
@@ -38,7 +34,6 @@ module ManipulateText
     most_common = $word_hash.sort_by{|k, v| v}[-10..-1].reverse
 
     return most_common
-
   end
 
 

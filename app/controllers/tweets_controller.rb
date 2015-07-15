@@ -8,7 +8,7 @@ class TweetsController < ApplicationController
   $word_count = 0
   $word_hash = Hash.new(0)
 
-  def stream
+  def stream #only ran one time
 
     append_file(Time.now.to_s)
 
